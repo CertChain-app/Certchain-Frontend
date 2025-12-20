@@ -47,8 +47,14 @@ export function wsrvLoader({
 }
 
 export function asset(path: string) {
+  const assetsBase =
+    process.env.NEXT_PUBLIC_ASSETS_URL ??
+    process.env.NEXT_PUBLIC_API_URL ??
+    process.env.NEXT_PUBLIC_BASE_URL ??
+    ""
+
   return wsrvLoader({
-    src: process.env.NEXT_PUBLIC_ASSETS_URL + "/" + path,
+    src: assetsBase ? `${assetsBase}/${path}` : path,
     width: 100,
     quality: 75,
     output: "webp",

@@ -26,10 +26,20 @@ const OImage: FC<OImageProps> = ({
   notCld,
   notModal,
 }) => {
+  const assetsBase =
+    process.env.NEXT_PUBLIC_ASSETS_URL ??
+    process.env.NEXT_PUBLIC_API_URL ??
+    process.env.NEXT_PUBLIC_BASE_URL ??
+    ""
+  const isAbsolute = typeof src === "string" && /^https?:\/\//.test(src)
   const url = src
-    ? notCld
+    ? isAbsolute
       ? src
-      : process.env.NEXT_PUBLIC_ASSETS_URL + "/" + src
+      : notCld
+      ? src
+      : assetsBase
+      ? `${assetsBase}/${src}`
+      : src
     : ""
   const [opened, { open, close }] = useDisclosure(false)
   return (
