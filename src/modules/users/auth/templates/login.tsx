@@ -10,9 +10,33 @@ import {
   Title,
 } from "@mantine/core"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
+import { useUserSession } from "../queries/use-user-session"
 import LoginForm from "../forms/login/form"
 
 export default function LoginTemplate() {
+  const router = useRouter()
+  const { isAuthenticated, isLoading } = useUserSession()
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/dashboard")
+    }
+  }, [isAuthenticated, router])
+
+  if (isLoading || isAuthenticated) {
+    return (
+      <Container size='sm' py={40}>
+        <Paper radius='md' p='xl' withBorder className='bg-white'>
+          <Text c='dimmed' size='sm' className='text-center'>
+            Loading...
+          </Text>
+        </Paper>
+      </Container>
+    )
+  }
+
   return (
     <Container size='sm' py={40}>
       <Paper radius='md' p='xl' withBorder className='bg-white'>
