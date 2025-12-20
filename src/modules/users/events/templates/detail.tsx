@@ -297,7 +297,7 @@ export default function EventDetailTemplate({
                 <Button
                   fullWidth
                   component={Link}
-                  href={`/user/events/${eventData.id}`}
+                  href={`/dashboard/events/${eventData.id}`}
                   size='lg'
                   leftSection={<IconUserPlus size={20} />}
                 >
