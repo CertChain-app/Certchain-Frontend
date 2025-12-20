@@ -1,8 +1,8 @@
 "use client"
 
 import { Loader } from "@mantine/core"
-import { useParams, useRouter } from "next/navigation"
-import { FC } from "react"
+import { useRouter } from "next/navigation"
+import { FC, useEffect } from "react"
 import { useUserSession } from "../queries/use-user-session"
 
 interface UserProtectedRouteProps {
@@ -11,16 +11,22 @@ interface UserProtectedRouteProps {
 
 const UserProtectedRoute: FC<UserProtectedRouteProps> = ({ children }) => {
   const { isAuthenticated, isLoading } = useUserSession()
-  const { id } = useParams()
   const router = useRouter()
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      router.replace("/auth/login")
+    }
+  }, [isAuthenticated, isLoading, router])
+
   if (isLoading)
     return (
       <div className='flex items-center justify-center h-screen'>
         <Loader />
       </div>
     )
+
   if (!isAuthenticated) {
-    router.push(`/organizers/${id}/auth/login`)
     return (
       <div className='flex items-center justify-center h-screen'>
         <div className='text-center'>

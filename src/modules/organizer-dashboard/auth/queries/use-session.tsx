@@ -2,15 +2,18 @@ import { api } from "@/api"
 import { useQuery } from "@tanstack/react-query"
 
 export const useSession = () => {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, isError } = useQuery({
     queryKey: ["session"],
     queryFn: () => api.organizer.auth.session(),
+    retry: false,
   })
 
+  const user = isError ? undefined : data?.data?.data?.teamMember
+
   return {
-    user: data?.data?.data?.teamMember,
+    user,
     isLoading,
     error,
-    isAuthenticated: !!data?.data?.data?.teamMember,
+    isAuthenticated: !!user,
   }
 }

@@ -2,7 +2,7 @@
 
 import { Loader } from "@mantine/core"
 import { useParams, useRouter } from "next/navigation"
-import { FC } from "react"
+import { FC, useEffect } from "react"
 import { useSession } from "../queries/use-session"
 
 interface OrganizerProtectedRouteProps {
@@ -15,14 +15,21 @@ const OrganizerProtectedRoute: FC<OrganizerProtectedRouteProps> = ({
   const { isAuthenticated, isLoading } = useSession()
   const { id } = useParams()
   const router = useRouter()
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      router.replace(`/organizers/${id}/auth/login`)
+    }
+  }, [id, isAuthenticated, isLoading, router])
+
   if (isLoading)
     return (
       <div className='flex items-center justify-center h-screen'>
         <Loader />
       </div>
     )
+
   if (!isAuthenticated) {
-    router.push(`/organizers/${id}/auth/login`)
     return (
       <div className='flex items-center justify-center h-screen'>
         <div className='text-center'>
