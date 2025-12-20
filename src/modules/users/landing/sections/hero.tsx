@@ -1,4 +1,5 @@
 import { Button } from "@mantine/core"
+import Link from "next/link"
 import type { FC } from "react"
 import SearchForm from "../components/search-form"
 
@@ -20,6 +21,8 @@ export const HeroSection: FC = () => {
           <SearchForm />
         </div>
         <Button
+          component={Link}
+          href='/auth/register'
           variant='gradient'
           radius='xl'
           size='xl'

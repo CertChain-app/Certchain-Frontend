@@ -1,4 +1,5 @@
 import { Button, Card } from "@mantine/core"
+import Link from "next/link"
 import type { FC } from "react"
 
 export const CtaSection: FC = () => {
@@ -15,6 +16,8 @@ export const CtaSection: FC = () => {
           </p>
           <div className='flex flex-col sm:flex-row justify-center gap-4'>
             <Button
+              component={Link}
+              href='/auth/register'
               size='lg'
               radius='xl'
               className='bg-gradient-to-r from-blue-500 to-purple-500'
@@ -22,6 +25,8 @@ export const CtaSection: FC = () => {
               Create Your Free Account
             </Button>
             <Button
+              component={Link}
+              href='/events'
               variant='outline'
               size='lg'
               radius='xl'

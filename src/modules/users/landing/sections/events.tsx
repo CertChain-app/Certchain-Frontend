@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@mantine/core"
+import Link from "next/link"
 import type { FC } from "react"
 import { useUpcomingEvents } from "../../events/queries/use-upcoming-events"
 import { EventCard } from "../components/event-card"
@@ -28,7 +29,11 @@ export const EventsSection: FC = () => {
               ))}
         </div>
         <div className='text-center mt-12'>
-          <Button className='bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:opacity-90'>
+          <Button
+            component={Link}
+            href='/events'
+            className='bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:opacity-90'
+          >
             View All Events
           </Button>
         </div>

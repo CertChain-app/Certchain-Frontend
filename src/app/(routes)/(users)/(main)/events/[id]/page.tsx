@@ -11,7 +11,7 @@ interface EventDetailPageProps {
 export async function generateMetadata({ params }: EventDetailPageProps) {
   const { id } = await params
   const event = await getEvent(id)
-  if (!event?.data) return null
+  if (!event?.data) return {}
   return createMetadata({
     title: `${event?.data?.title} - ${event?.data?.organizer?.name}`,
     description: event?.data?.description || "Event",
