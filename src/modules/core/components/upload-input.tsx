@@ -52,6 +52,16 @@ export function UploadInput<T extends FieldValues>({
     shouldUnregister,
   })
 
+  const assetsBase =
+    process.env.NEXT_PUBLIC_ASSETS_URL ??
+    process.env.NEXT_PUBLIC_API_URL ??
+    process.env.NEXT_PUBLIC_BASE_URL ??
+    ""
+  const apiBase =
+    process.env.NEXT_PUBLIC_API_URL ?? process.env.NEXT_PUBLIC_BASE_URL ?? ""
+  const isAbsoluteUrl = (url?: string) =>
+    typeof url === "string" && /^https?:\/\//.test(url)
+
   const [fileList, setFileList] = useState<UploadFile[]>(() => {
     if (!value) return []
     if (Array.isArray(value)) {
@@ -59,11 +69,15 @@ export function UploadInput<T extends FieldValues>({
         uid: `-${index}`,
         name: url.split("/").pop() || "file",
         status: "done",
-        url: url.startsWith("assets/")
-          ? `${process.env.NEXT_PUBLIC_ASSETS_URL}/${url}`
+        url: isAbsoluteUrl(url)
+          ? url
+          : url.startsWith("assets/") && assetsBase
+          ? `${assetsBase}/${url}`
           : url,
-        thumbUrl: url.startsWith("assets/")
-          ? `${process.env.NEXT_PUBLIC_ASSETS_URL}/${url}`
+        thumbUrl: isAbsoluteUrl(url)
+          ? url
+          : url.startsWith("assets/") && assetsBase
+          ? `${assetsBase}/${url}`
           : url,
       }))
     }
@@ -72,11 +86,15 @@ export function UploadInput<T extends FieldValues>({
         uid: "-1",
         name: (value as string).split("/").pop() || "file",
         status: "done",
-        url: (value as string).startsWith("assets/")
-          ? `${process.env.NEXT_PUBLIC_ASSETS_URL}/${value}`
+        url: isAbsoluteUrl(value as string)
+          ? (value as string)
+          : (value as string).startsWith("assets/") && assetsBase
+          ? `${assetsBase}/${value}`
           : (value as string),
-        thumbUrl: (value as string).startsWith("assets/")
-          ? `${process.env.NEXT_PUBLIC_ASSETS_URL}/${value}`
+        thumbUrl: isAbsoluteUrl(value as string)
+          ? (value as string)
+          : (value as string).startsWith("assets/") && assetsBase
+          ? `${assetsBase}/${value}`
           : (value as string),
       },
     ]
@@ -158,38 +176,40 @@ export function UploadInput<T extends FieldValues>({
       <div
         className={twMerge("rounded-md", hasError && "border border-red-500")}
       >
-        <Dragger
-          name='file'
-          multiple={uploadProps?.multiple}
-          action='/api/image/upload'
-          accept='image/*'
-          maxCount={uploadProps?.multiple ? undefined : 1}
-          beforeUpload={beforeUpload}
-          onChange={handleChange}
-          onRemove={onRemove}
-          fileList={fileList}
-          listType='picture'
-          progress={{
-            strokeColor: {
-              "0%": "#108ee9",
-              "100%": "#87d068",
-            },
-            strokeWidth: 3,
-            format: (percent?: number) =>
-              `${parseFloat((percent || 0).toFixed(2))}%`,
-          }}
-          showUploadList={{
-            showPreviewIcon: true,
-            showRemoveIcon: true,
-            showDownloadIcon: false,
-          }}
-          className={twMerge(
-            "[&_.ant-upload]:bg-white [&_.ant-upload]:border-dashed [&_.ant-upload]:border-gray-300 [&_.ant-upload]:hover:border-primary-500",
-            hasError &&
-              "[&_.ant-upload]:border-red-500 [&_.ant-upload]:hover:border-red-500"
-          )}
-          {...uploadProps}
-        >
+          <Dragger
+            name='file'
+            multiple={uploadProps?.multiple}
+            action={`${apiBase}/image/upload`}
+            accept='image/*'
+            maxCount={uploadProps?.multiple ? undefined : 1}
+            beforeUpload={beforeUpload}
+            onChange={handleChange}
+            onRemove={onRemove}
+            fileList={fileList}
+            listType='picture'
+            withCredentials
+            progress={{
+              strokeColor: {
+                "0%": "#108ee9",
+                "100%": "#87d068",
+              },
+              size: 3,
+              format: (percent?: number) =>
+                `${parseFloat((percent || 0).toFixed(2))}%`,
+            }}
+            showUploadList={{
+              showPreviewIcon: true,
+              showRemoveIcon: true,
+              showDownloadIcon: false,
+            }}
+            className={twMerge(
+              "[&_.ant-upload]:bg-white [&_.ant-upload]:border-dashed [&_.ant-upload]:border-gray-300 [&_.ant-upload]:hover:border-primary-500",
+              hasError &&
+                "[&_.ant-upload]:border-red-500 [&_.ant-upload]:hover:border-red-500"
+            )}
+            {...uploadProps}
+          >
+
           <p className='ant-upload-drag-icon'>
             <InboxOutlined />
           </p>
