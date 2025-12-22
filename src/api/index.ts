@@ -5,6 +5,7 @@ import { OrganizerEventClient } from "./clients/OrganizerEventClient"
 import { OrganizersClient } from "./clients/OrganizersClient"
 import { OrganizerUserEventClient } from "./clients/OrganizerUserEventClient"
 import { UserAuthClient } from "./clients/UserAuthClient"
+import { UserClient } from "./clients/UserClient"
 import { UserConversationClient } from "./clients/UserConservationClient"
 import { UserEventClient } from "./clients/UserEventClient"
 import { UserUserEventClient } from "./clients/UserUserEventClient"
@@ -19,6 +20,7 @@ export const api = {
   },
   user: {
     auth: new UserAuthClient(),
+    profile: new UserClient(),
     event: new UserEventClient(),
     userEvent: new UserUserEventClient(),
     conversation: new UserConversationClient(),
