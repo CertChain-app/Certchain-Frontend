@@ -40,6 +40,16 @@ export default function DashboardNavbar() {
         className:
           pathname === "/dashboard/chats" ? "bg-blue-50 text-blue-600" : "",
       },
+      {
+        label: "Certificates",
+        icon: IconNotes,
+        link: "/dashboard/certificates",
+        active: pathname === "/dashboard/certificates",
+        className:
+          pathname === "/dashboard/certificates"
+            ? "bg-blue-50 text-blue-600"
+            : "",
+      },
       // {
       //   label: "Profile",
       //   icon: IconUser,
