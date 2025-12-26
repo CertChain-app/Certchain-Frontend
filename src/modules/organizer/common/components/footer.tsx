@@ -20,24 +20,24 @@ const Footer: FC = ({}) => {
             <h3 className='text-lg font-semibold mb-4'>Product</h3>
             <ul className='space-y-2'>
               <li>
-                <Link href='#' className='text-gray-600 hover:text-gray-900'>
+                <Link href='/organizers' className='text-gray-600 hover:text-gray-900'>
                   Features
                 </Link>
               </li>
               <li>
-                <Link href='#' className='text-gray-600 hover:text-gray-900'>
+                <span className='text-gray-600 cursor-default'>
                   Pricing
-                </Link>
+                </span>
               </li>
               <li>
-                <Link href='#' className='text-gray-600 hover:text-gray-900'>
+                <span className='text-gray-600 cursor-default'>
                   Case Studies
-                </Link>
+                </span>
               </li>
               <li>
-                <Link href='#' className='text-gray-600 hover:text-gray-900'>
+                <span className='text-gray-600 cursor-default'>
                   API
-                </Link>
+                </span>
               </li>
             </ul>
           </div>
@@ -45,24 +45,24 @@ const Footer: FC = ({}) => {
             <h3 className='text-lg font-semibold mb-4'>Company</h3>
             <ul className='space-y-2'>
               <li>
-                <Link href='#' className='text-gray-600 hover:text-gray-900'>
+                <span className='text-gray-600 cursor-default'>
                   About Us
-                </Link>
+                </span>
               </li>
               <li>
-                <Link href='#' className='text-gray-600 hover:text-gray-900'>
+                <span className='text-gray-600 cursor-default'>
                   Careers
-                </Link>
+                </span>
               </li>
               <li>
-                <Link href='#' className='text-gray-600 hover:text-gray-900'>
+                <span className='text-gray-600 cursor-default'>
                   Partners
-                </Link>
+                </span>
               </li>
               <li>
-                <Link href='#' className='text-gray-600 hover:text-gray-900'>
+                <span className='text-gray-600 cursor-default'>
                   Contact
-                </Link>
+                </span>
               </li>
             </ul>
           </div>

@@ -9,11 +9,11 @@ import UserSignedIn from "../../auth/components/signed-in"
 import UserSignedOut from "../../auth/components/signed-out"
 
 const navLinks = [
-  { label: "Features", href: "#features" },
+  { label: "Features", href: "/#features" },
   { label: "Events", href: "/events" },
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "Testimonials", href: "#testimonials" },
-  { label: "Blog", href: "#blog" },
+  { label: "How It Works", href: "/#how-it-works" },
+  { label: "Testimonials", href: "/#testimonials" },
+  { label: "Blog", href: "/#blog" },
   { label: "For Organizers", href: "/organizers" },
 ]
 
