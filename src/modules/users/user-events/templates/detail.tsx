@@ -25,7 +25,7 @@ import QRCodeStyling from "@solana/qr-code-styling"
 // import { AddToCalendarButton } from "add-to-calendar-button-react"
 import dayjs from "dayjs"
 import Link from "next/link"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   TbCalendar,
   TbCalendarEvent,
@@ -72,7 +72,7 @@ export default function UserEventDetailTemplate({
   }, [userEvent])
 
   // Calculate time left
-  const calculateTimeLeft = () => {
+  const calculateTimeLeft = useCallback(() => {
     if (!userEvent?.event.startDate)
       return { hours: 0, minutes: 0, seconds: 0, total: 0 }
 
@@ -87,7 +87,7 @@ export default function UserEventDetailTemplate({
     const seconds = diff % 60
 
     return { hours, minutes, seconds, total: diff }
-  }
+  }, [userEvent?.event.startDate])
 
   // Update time every second
   const interval = useInterval(() => {
@@ -98,7 +98,7 @@ export default function UserEventDetailTemplate({
     setTimeLeft(calculateTimeLeft())
     interval.start()
     return interval.stop
-  }, [userEvent])
+  }, [calculateTimeLeft, interval, userEvent])
 
   // Check if the event is starting within 30 minutes
   const isWithin30Minutes = useMemo(() => {
