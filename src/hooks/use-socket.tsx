@@ -50,7 +50,7 @@ export const SocketProvider = ({
     return () => {
       socketInstance.disconnect()
     }
-  }, [])
+  }, [url])
 
   return (
     <SocketContext.Provider value={{ socket, isConnected }}>
