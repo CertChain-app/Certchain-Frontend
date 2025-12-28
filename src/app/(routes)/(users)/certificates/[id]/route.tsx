@@ -1,4 +1,5 @@
 /** @jsxImportSource react */
+/* eslint-disable @next/next/no-img-element */
 import { ImageResponse } from "@vercel/og"
 import { NextResponse } from "next/server"
 
