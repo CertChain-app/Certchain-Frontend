@@ -1,4 +1,3 @@
-import OImage from "@/modules/core/components/o-image"
 import { ICertificate } from "@/modules/types"
 import { Badge, Button, Card, Group, Text } from "@mantine/core"
 import dayjs from "dayjs"
