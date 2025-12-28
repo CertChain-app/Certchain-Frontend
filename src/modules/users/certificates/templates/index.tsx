@@ -25,9 +25,12 @@ const UserCertificatesTemplate: FC = () => {
         {
           id: userEvent.certificate,
           event: userEvent.event,
+          eventId: userEvent.event?.id ?? "",
           user: userEvent.user,
-          createdAt: userEvent.event?.endDate,
-        } as ICertificate,
+          userId: userEvent.user?.id ?? "",
+          createdAt: userEvent.event?.endDate ?? new Date(),
+          updatedAt: userEvent.event?.endDate ?? new Date(),
+        } satisfies ICertificate,
       ]
     }
 
@@ -35,9 +38,20 @@ const UserCertificatesTemplate: FC = () => {
       {
         ...userEvent.certificate,
         event: userEvent.certificate?.event ?? userEvent.event,
+        eventId:
+          userEvent.certificate?.eventId ?? userEvent.event?.id ?? "",
         user: userEvent.certificate?.user ?? userEvent.user,
-        createdAt: userEvent.certificate?.createdAt ?? userEvent.event?.endDate,
-      } as ICertificate,
+        userId: userEvent.certificate?.userId ?? userEvent.user?.id ?? "",
+        createdAt:
+          userEvent.certificate?.createdAt ??
+          userEvent.event?.endDate ??
+          new Date(),
+        updatedAt:
+          userEvent.certificate?.updatedAt ??
+          userEvent.certificate?.createdAt ??
+          userEvent.event?.endDate ??
+          new Date(),
+      } satisfies ICertificate,
     ]
   })
 
