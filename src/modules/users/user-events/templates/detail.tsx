@@ -304,7 +304,7 @@ export default function UserEventDetailTemplate({
               <OImage
                 src={event.banner}
                 alt={event.title}
-                className='w-full h-[470px] object-cover hover:scale-105 transition-transform duration-700'
+                className='w-full h-[320px] md:h-[380px] object-cover hover:scale-105 transition-transform duration-700'
                 width={816}
                 height={470}
               />
