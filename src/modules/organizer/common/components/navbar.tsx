@@ -1,3 +1,5 @@
+"use client"
+
 import Logo from "@/modules/core/components/logo"
 import { Button } from "@mantine/core"
 import Link from "next/link"

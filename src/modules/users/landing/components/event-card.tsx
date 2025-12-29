@@ -1,3 +1,5 @@
+"use client"
+
 import OImage from "@/modules/core/components/o-image"
 import { IEvent } from "@/modules/types"
 import { Button, Card } from "@mantine/core"

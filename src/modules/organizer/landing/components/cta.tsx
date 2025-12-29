@@ -1,3 +1,5 @@
+"use client"
+
 import { Button, Card } from "@mantine/core"
 import Link from "next/link"
 import type { FC } from "react"
