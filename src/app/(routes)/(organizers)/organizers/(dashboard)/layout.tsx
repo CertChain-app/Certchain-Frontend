@@ -1,19 +1,11 @@
-import { OrganizerDashboardProvider } from "@/modules/organizer-dashboard/common/providers/organizer-dashboard-provider"
-import type { FC } from "react"
-
-interface OrganizerIndividualLayoutProps {
+interface OrganizerDashboardLayoutProps {
   children: React.ReactNode
-  params: Promise<{ id: string }>
 }
 
-const OrganizerIndividualLayout: FC<OrganizerIndividualLayoutProps> = async ({
+const OrganizerDashboardLayout = ({
   children,
-  params,
-}) => {
-  const { id } = await params
-  return (
-    <OrganizerDashboardProvider id={id}>{children}</OrganizerDashboardProvider>
-  )
+}: OrganizerDashboardLayoutProps) => {
+  return children
 }
 
-export default OrganizerIndividualLayout
+export default OrganizerDashboardLayout
