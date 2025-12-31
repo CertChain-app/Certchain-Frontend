@@ -7,17 +7,20 @@ export const config = {
 
 export default async function middleware(req: NextRequest) {
   const url = req.nextUrl
+  const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN
 
   // Get hostname of request
   const hostname = req.headers
     .get("host")!
-    .replace(".localhost:3001", `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`)
+    .replace(".localhost:3001", rootDomain ? `.${rootDomain}` : "")
 
   // Special handling for root domain and localhost
   if (
     hostname === "localhost:3001" ||
     hostname === "certchain.co" ||
-    hostname === process.env.NEXT_PUBLIC_ROOT_DOMAIN
+    (rootDomain && hostname === rootDomain) ||
+    hostname.endsWith(".vercel.app") ||
+    !rootDomain
   ) {
     return NextResponse.next()
   }
@@ -33,21 +36,24 @@ export default async function middleware(req: NextRequest) {
   }
 
   // Extract subdomain
-  const subdomain = hostname.replace(
-    `.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`,
-    ""
-  )
+  const subdomain = hostname.replace(`.${rootDomain}`, "")
 
   if (!subdomain) {
     return NextResponse.next()
   }
 
-  const organizer = await getOrganizerByDomain(hostname)
+  let organizer: Awaited<ReturnType<typeof getOrganizerByDomain>> | null = null
+  try {
+    organizer = await getOrganizerByDomain(hostname)
+  } catch (error) {
+    console.error("Error resolving organizer domain:", error)
+    return NextResponse.next()
+  }
 
   console.log("organizer", organizer)
 
   if (organizer?.statusCode == 404) {
-    return NextResponse.error()
+    return NextResponse.redirect(new URL("/404", req.url))
   }
 
   const rewriteUrl = new URL(`/internal/${hostname}${path}`, req.url)
