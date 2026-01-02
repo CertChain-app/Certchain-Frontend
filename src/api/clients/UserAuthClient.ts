@@ -17,7 +17,12 @@ export class UserAuthClient extends CrudClient<IUser, RegisterSchema> {
   async session() {
     return this.get<{
       user: IUser
-    }>("/session")
+    }>("/session", {
+      headers: {
+        "Cache-Control": "no-store",
+        Pragma: "no-cache",
+      },
+    })
   }
 
   async login(data: LoginSchema) {
