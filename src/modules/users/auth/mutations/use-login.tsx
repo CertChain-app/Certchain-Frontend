@@ -6,8 +6,8 @@ export const useLogin = () => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (data: LoginSchema) => api.user.auth.login(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user-session"] })
+    onSuccess: (response) => {
+      queryClient.setQueryData(["user-session"], response)
     },
   })
 }
