@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Box, Button, Group, Stack, Text } from "@mantine/core"
 import { IconArrowRight } from "@tabler/icons-react"
 import Link from "next/link"
-import router from "next/router"
+import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { PasswordInput, TextInput } from "react-hook-form-mantine"
 import { toast } from "react-toastify"
@@ -14,6 +14,7 @@ import { useLogin } from "../../mutations/use-login"
 import { loginSchema, type LoginSchema } from "./schema"
 
 export default function LoginForm() {
+  const router = useRouter()
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
