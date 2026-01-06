@@ -19,25 +19,12 @@ const UserProtectedRoute: FC<UserProtectedRouteProps> = ({ children }) => {
     }
   }, [isAuthenticated, isLoading, router])
 
-  if (isLoading)
+  if (isLoading || !isAuthenticated)
     return (
       <div className='flex items-center justify-center h-screen'>
         <Loader />
       </div>
     )
-
-  if (!isAuthenticated) {
-    return (
-      <div className='flex items-center justify-center h-screen'>
-        <div className='text-center'>
-          <h1 className='text-2xl font-bold text-gray-800 mb-2'>
-            Access Denied
-          </h1>
-          <p className='text-gray-600'>Please sign in to access this page</p>
-        </div>
-      </div>
-    )
-  }
 
   return <>{children}</>
 }
