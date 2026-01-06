@@ -20,10 +20,10 @@ export default function LoginTemplate() {
   const { isAuthenticated, isLoading } = useUserSession()
 
   useEffect(() => {
-    if (isAuthenticated) {
-      router.push("/dashboard")
+    if (!isLoading && isAuthenticated) {
+      router.replace("/dashboard")
     }
-  }, [isAuthenticated, router])
+  }, [isAuthenticated, isLoading, router])
 
   if (isLoading || isAuthenticated) {
     return (
