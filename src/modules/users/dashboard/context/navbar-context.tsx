@@ -5,6 +5,7 @@ import { createContext, useContext, useEffect, useState } from "react"
 interface NavbarContextType {
   isOpen: boolean
   toggle: () => void
+  close: () => void
 }
 
 const NavbarContext = createContext<NavbarContextType | undefined>(undefined)
@@ -18,9 +19,10 @@ export function NavbarProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const toggle = () => setIsOpen((prev) => !prev)
+  const close = () => setIsOpen(false)
 
   return (
-    <NavbarContext.Provider value={{ isOpen, toggle }}>
+    <NavbarContext.Provider value={{ isOpen, toggle, close }}>
       {children}
     </NavbarContext.Provider>
   )

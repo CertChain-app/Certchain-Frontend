@@ -1,7 +1,7 @@
 "use client"
 
 import { Code, Group, ScrollArea } from "@mantine/core"
-import { IconGauge, IconMessages, IconNotes } from "@tabler/icons-react"
+import { IconGauge, IconMessages, IconNotes, IconX } from "@tabler/icons-react"
 import { useNavbar } from "../context/navbar-context"
 
 import Logo from "@/modules/core/components/logo"
@@ -12,7 +12,7 @@ import { LinksGroup } from "./navbar-link-groups"
 import UserButton from "./user-button"
 
 export default function DashboardNavbar() {
-  const { isOpen } = useNavbar()
+  const { isOpen, close } = useNavbar()
   const pathname = usePathname()
 
   const sidebarItems = useMemo(() => {
@@ -67,7 +67,7 @@ export default function DashboardNavbar() {
 
   return (
     <nav
-      className={`bg-white h-screen fixed top-0 left-0 w-[300px] p-4 pb-0 flex flex-col border-r border-gray-200 transition-transform duration-300 ${
+      className={`bg-white h-screen fixed top-0 left-0 w-[280px] md:w-[300px] p-4 pb-0 flex flex-col border-r border-gray-200 transition-transform duration-300 z-30 ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
@@ -76,7 +76,17 @@ export default function DashboardNavbar() {
           <Link href='/'>
             <Logo style={{ width: 120 }} />
           </Link>
-          <Code fw={700}>v3.1.2</Code>
+          <div className='flex items-center gap-2'>
+            <Code fw={700}>v3.1.2</Code>
+            <button
+              type='button'
+              onClick={close}
+              aria-label='Close navigation menu'
+              className='md:hidden inline-flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 text-gray-600 hover:bg-gray-50'
+            >
+              <IconX size={16} />
+            </button>
+          </div>
         </Group>
       </div>
 
