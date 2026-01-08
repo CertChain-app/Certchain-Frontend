@@ -1,13 +1,13 @@
 "use client"
 
-import { useOrganizerLogout } from "@/modules/organizer/auth/mutations/use-organizer-logout"
+import { useLogout } from "@/modules/users/auth/mutations/use-logout"
 import { Avatar, Group, Menu, Text, UnstyledButton } from "@mantine/core"
 import { IconChevronRight, IconLogout } from "@tabler/icons-react"
 import { useUserSession } from "../../auth/queries/use-user-session"
 export function UserButton() {
   const { user } = useUserSession()
 
-  const logout = useOrganizerLogout()
+  const logout = useLogout()
 
   return (
     <Menu width={300}>
