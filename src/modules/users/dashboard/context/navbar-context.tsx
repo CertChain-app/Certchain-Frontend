@@ -1,4 +1,6 @@
-import { createContext, useContext, useState } from "react"
+"use client"
+
+import { createContext, useContext, useEffect, useState } from "react"
 
 interface NavbarContextType {
   isOpen: boolean
@@ -8,7 +10,12 @@ interface NavbarContextType {
 const NavbarContext = createContext<NavbarContextType | undefined>(undefined)
 
 export function NavbarProvider({ children }: { children: React.ReactNode }) {
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    const media = window.matchMedia("(min-width: 1024px)")
+    setIsOpen(media.matches)
+  }, [])
 
   const toggle = () => setIsOpen((prev) => !prev)
 

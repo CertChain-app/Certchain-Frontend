@@ -11,8 +11,8 @@ const MainContent: FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     <div
-      className={`flex-1 transition-[margin] duration-300 ${
-        isOpen ? "ml-[300px]" : "ml-0"
+      className={`flex-1 transition-[margin] duration-300 ml-0 ${
+        isOpen ? "md:ml-[300px]" : "md:ml-0"
       }`}
     >
       {/* Header - Fixed at the top */}

@@ -1,7 +1,8 @@
 "use client"
 import Logo from "@/modules/core/components/logo"
-import { Button, Drawer, Menu } from "@mantine/core"
+import { Button, Drawer } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
+import { IconMenu2 } from "@tabler/icons-react"
 
 import Link from "next/link"
 import type { FC } from "react"
@@ -68,9 +69,14 @@ export const Navbar: FC = () => {
             </Button>
           </UserSignedOut>
         </div>
-        <Button onClick={open} className='md:hidden'>
-          <Menu />
-        </Button>
+        <button
+          type='button'
+          onClick={open}
+          aria-label='Open menu'
+          className='md:hidden inline-flex items-center justify-center rounded-full border border-blue-100 bg-gradient-to-br from-blue-50 via-white to-blue-100 p-2 text-blue-600 shadow-sm transition hover:shadow-md'
+        >
+          <IconMenu2 size={20} />
+        </button>
         <Drawer opened={opened} onClose={close} title='Menu'>
           <nav className='flex flex-col gap-4'>
             {navLinks.map((link) => (
