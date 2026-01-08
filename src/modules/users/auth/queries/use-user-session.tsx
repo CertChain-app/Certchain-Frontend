@@ -6,7 +6,7 @@ export const useUserSession = () => {
     queryKey: ["user-session"],
     queryFn: () => api.user.auth.session(),
     refetchOnWindowFocus: false,
-    refetchOnMount: false,
+    refetchOnMount: "always",
     refetchOnReconnect: false,
     staleTime: 60 * 1000,
     retry: false,
