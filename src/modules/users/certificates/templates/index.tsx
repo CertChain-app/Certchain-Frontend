@@ -21,7 +21,8 @@ const UserCertificatesTemplate: FC = () => {
     if (!userEvent.certificate) return []
 
     if (typeof userEvent.certificate === "string") {
-      if (!userEvent.certificate) return []
+      if (!userEvent.certificate || userEvent.certificate === "undefined")
+        return []
       return [
         {
           id: userEvent.certificate,
