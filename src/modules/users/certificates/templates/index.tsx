@@ -40,7 +40,7 @@ const UserCertificatesTemplate: FC = () => {
       userEvent.certificate?.id ||
       (userEvent.certificate as { certificateId?: string })?.certificateId ||
       ""
-    if (!certificateId) return []
+    if (!certificateId || certificateId === "undefined") return []
 
     return [
       {

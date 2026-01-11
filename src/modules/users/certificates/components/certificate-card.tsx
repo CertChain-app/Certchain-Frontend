@@ -9,7 +9,7 @@ interface CertificateCardProps {
 }
 
 const CertificateCard: FC<CertificateCardProps> = ({ certificate }) => {
-  if (!certificate?.id) return null
+  if (!certificate?.id || certificate.id === "undefined") return null
   const eventTitle = certificate.event?.title ?? "Untitled Event"
   const issuedAt = certificate.createdAt
     ? dayjs(certificate.createdAt).format("MMM D, YYYY")

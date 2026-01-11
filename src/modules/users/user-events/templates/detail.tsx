@@ -201,14 +201,14 @@ export default function UserEventDetailTemplate({
 
   const certificateId = useMemo(() => {
     if (!userEvent?.certificate) return ""
-    return typeof userEvent.certificate === "string"
-      ? userEvent.certificate === "undefined"
-        ? ""
-        : userEvent.certificate
-      : userEvent.certificate.id ||
+    const id =
+      typeof userEvent.certificate === "string"
+        ? userEvent.certificate
+        : userEvent.certificate.id ||
           (userEvent.certificate as { certificateId?: string })
             ?.certificateId ||
           ""
+    return id === "undefined" ? "" : id
   }, [userEvent])
 
   return (
