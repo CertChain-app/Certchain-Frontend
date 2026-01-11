@@ -21,6 +21,7 @@ const UserCertificatesTemplate: FC = () => {
     if (!userEvent.certificate) return []
 
     if (typeof userEvent.certificate === "string") {
+      if (!userEvent.certificate) return []
       return [
         {
           id: userEvent.certificate,
@@ -34,9 +35,16 @@ const UserCertificatesTemplate: FC = () => {
       ]
     }
 
+    const certificateId =
+      userEvent.certificate?.id ||
+      (userEvent.certificate as { certificateId?: string })?.certificateId ||
+      ""
+    if (!certificateId) return []
+
     return [
       {
         ...userEvent.certificate,
+        id: certificateId,
         event: userEvent.certificate?.event ?? userEvent.event,
         eventId:
           userEvent.certificate?.eventId ?? userEvent.event?.id ?? "",
