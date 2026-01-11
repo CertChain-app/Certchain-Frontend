@@ -199,6 +199,13 @@ export default function UserEventDetailTemplate({
   const hasSchedules = event.schedules && event.schedules.length > 0
   const hasFaqs = event.faqs && event.faqs.length > 0
 
+  const certificateId = useMemo(() => {
+    if (!userEvent?.certificate) return ""
+    return typeof userEvent.certificate === "string"
+      ? userEvent.certificate
+      : userEvent.certificate.id
+  }, [userEvent])
+
   return (
     <div className='max-w-7xl mx-auto p-6'>
       <Box
@@ -257,7 +264,7 @@ export default function UserEventDetailTemplate({
         </Box>
       )}
 
-      {userEvent?.certificate && (
+      {certificateId && (
         <Box
           p='lg'
           className='mb-6 border border-opacity-20 rounded-xl bg-white/70 backdrop-blur-md shadow-lg'
@@ -288,7 +295,7 @@ export default function UserEventDetailTemplate({
               variant='light'
               color='blue'
               component={Link}
-              href={`/certificates/${userEvent.certificate.id}`}
+              href={`/certificates/${certificateId}`}
               leftSection={<TbDownload size={16} />}
             >
               View Certificate
