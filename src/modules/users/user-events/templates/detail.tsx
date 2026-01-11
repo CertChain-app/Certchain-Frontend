@@ -203,7 +203,10 @@ export default function UserEventDetailTemplate({
     if (!userEvent?.certificate) return ""
     return typeof userEvent.certificate === "string"
       ? userEvent.certificate
-      : userEvent.certificate.id
+      : userEvent.certificate.id ||
+          (userEvent.certificate as { certificateId?: string })
+            ?.certificateId ||
+          ""
   }, [userEvent])
 
   return (
