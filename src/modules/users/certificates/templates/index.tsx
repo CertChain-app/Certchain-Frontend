@@ -21,11 +21,14 @@ const UserCertificatesTemplate: FC = () => {
     if (!userEvent.certificate) return []
 
     if (typeof userEvent.certificate === "string") {
-      if (!userEvent.certificate || userEvent.certificate === "undefined")
+      const fallbackId = (userEvent as { certificateId?: string })
+        ?.certificateId
+      const certificateId = fallbackId || userEvent.certificate
+      if (!certificateId || certificateId === "undefined")
         return []
       return [
         {
-          id: userEvent.certificate,
+          id: certificateId,
           event: userEvent.event,
           eventId: userEvent.event?.id ?? "",
           user: userEvent.user,
@@ -37,6 +40,7 @@ const UserCertificatesTemplate: FC = () => {
     }
 
     const certificateId =
+      (userEvent as { certificateId?: string })?.certificateId ||
       userEvent.certificate?.id ||
       (userEvent.certificate as { certificateId?: string })?.certificateId ||
       ""
