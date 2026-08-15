@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { useUserSession } from "../queries/use-user-session"
 import LoginForm from "../forms/login/form"
+import GuestLoginButton from "../components/guest-login-button"
 
 export default function LoginTemplate() {
   const router = useRouter()
@@ -61,6 +62,12 @@ export default function LoginTemplate() {
               Create an account
             </Button>
           </Link>
+
+          <GuestLoginButton fullWidth mt='xs' />
+          <Text size='xs' c='dimmed' ta='center'>
+            Guest mode signs you into a shared demo account with sample events
+            and certificates. No email needed.
+          </Text>
         </Stack>
 
         <Text size='xs' c='dimmed' ta='center' mt='xl'>

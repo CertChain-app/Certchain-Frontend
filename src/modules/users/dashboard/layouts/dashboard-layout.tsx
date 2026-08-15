@@ -4,6 +4,7 @@ import type { FC } from "react"
 import SignedIn from "../../auth/components/signed-in"
 import { useUserSession } from "../../auth/queries/use-user-session"
 import DashboardHeader from "../components/header"
+import GuestBanner from "../components/guest-banner"
 import DashboardNavbar from "../components/navbar"
 import { NavbarProvider, useNavbar } from "../context/navbar-context"
 
@@ -24,6 +25,7 @@ const MainContent: FC<{ children: React.ReactNode }> = ({ children }) => {
 
       {/* Main content */}
       <main className='p-6 space-y-4'>
+        <GuestBanner />
         {error && (
           <div className='rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700'>
             Session error: {String((error as { message?: string })?.message ?? error)}

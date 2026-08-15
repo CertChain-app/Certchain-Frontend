@@ -2,6 +2,7 @@
 
 import type { FC } from "react"
 import OrganizerSignedIn from "../../auth/components/signed-in"
+import OrganizerGuestBanner from "../components/guest-banner"
 import OrganizerDashboardHeader from "../components/header"
 import OrganizerDashboardNavbar from "../components/navbar"
 import { NavbarProvider, useNavbar } from "../context/navbar-context"
@@ -21,7 +22,10 @@ const MainContent: FC<{ children: React.ReactNode }> = ({ children }) => {
       </header>
 
       {/* Main content */}
-      <main className='p-6'>{children}</main>
+      <main className='p-6'>
+        <OrganizerGuestBanner />
+        {children}
+      </main>
     </div>
   )
 }

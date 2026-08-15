@@ -10,6 +10,7 @@ import {
   Title,
 } from "@mantine/core"
 import Link from "next/link"
+import GuestLoginButton from "../components/guest-login-button"
 import RegisterForm from "../forms/register/form"
 
 export default function RegisterTemplate() {
@@ -33,11 +34,21 @@ export default function RegisterTemplate() {
           <Text size='sm' c='dimmed'>
             Already have an account?
           </Text>
-          <Link href='/login' className='w-full'>
+          <Link href='/auth/login' className='w-full'>
             <Button variant='light' fullWidth>
               Sign in to your account
             </Button>
           </Link>
+
+          <GuestLoginButton
+            fullWidth
+            mt='xs'
+            label='Skip signup, explore as guest'
+          />
+          <Text size='xs' c='dimmed' ta='center'>
+            Guest mode signs you into a shared demo account with sample events
+            and certificates.
+          </Text>
         </Stack>
 
         <Text size='xs' c='dimmed' ta='center' mt='xl'>

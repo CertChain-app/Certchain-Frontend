@@ -1,6 +1,7 @@
 "use client"
 
-import { Avatar, Box, Stack, Text } from "@mantine/core"
+import OrganizerGuestLoginButton from "@/modules/organizer/auth/components/guest-login-button"
+import { Avatar, Box, Divider, Stack, Text } from "@mantine/core"
 import type { FC } from "react"
 import { useOrganizerDashboardContext } from "../../common/context/organizer-dashboard-context"
 import OrganizerLoginForm from "../form/login/form"
@@ -24,6 +25,15 @@ const OrganizerLoginTemplate: FC = () => {
       </Stack>
 
       <OrganizerLoginForm organizerId={organizer?.id ?? ""} />
+
+      <Stack gap='xs'>
+        <Divider label='or' labelPosition='center' />
+        <OrganizerGuestLoginButton fullWidth />
+        <Text size='xs' c='dimmed' ta='center'>
+          Jump into the demo workspace instead — sample events, attendees, and
+          certificates, no credentials needed.
+        </Text>
+      </Stack>
     </Box>
   )
 }
