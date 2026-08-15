@@ -30,8 +30,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -39,3 +40,30 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# logs
+*.log
+logs/
+
+# caches
+.turbo/
+.cache/
+.eslintcache
+
+# credentials — never commit these
+*.pem
+*.key
+*.p12
+*.pfx
+*-service-account.json
+
+# this project standardises on yarn; keep a single lockfile
+package-lock.json
+pnpm-lock.yaml
+bun.lockb
