@@ -85,6 +85,32 @@ Each module under `src/modules` follows the same internal shape —
 `templates/` for page-level composition, `components/`, `forms/` with colocated
 Zod schemas, and `queries/` + `mutations/` wrapping TanStack Query.
 
+### Signing in
+
+`/auth/login` and `/auth/register` serve attendees and organizers alike — a
+segmented control switches between them, and `?as=organizer` opens straight on
+the organizer side. `/organizers/auth/login` and `/organizers/auth/register`
+redirect there, so older links keep working.
+
+Choosing *organizing* on the sign-in page asks for the organization's CertChain
+address and hands off to `/organizers/<id>/auth/login`, which is where the
+credentials are actually entered.
+
+### Guest mode
+
+Both sides offer a one-click guest sign-in that lands on a pre-seeded demo
+account, so the app can be explored without registering. The dashboards show a
+banner for the duration; a guest is recognised by comparing the session email
+against `NEXT_PUBLIC_GUEST_USER_EMAIL` / `NEXT_PUBLIC_GUEST_ORGANIZER_EMAIL`.
+The API rebuilds that demo data daily, so nothing a guest changes sticks.
+
+### Certificate verification
+
+`/verify` takes a certificate ID — or a pasted certificate link — and sends the
+visitor to `/certificates/<id>`, which reads the public verification endpoint
+and shows who the certificate was issued to, for which event, by whom and when.
+No account is involved on either page.
+
 ### Routing and multi-tenancy
 
 `src/middleware.ts` inspects the request hostname. Requests to the root domain

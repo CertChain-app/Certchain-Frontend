@@ -1,7 +1,17 @@
 import RegisterTemplate from "@/modules/users/auth/templates/register"
 
-const RegisterPage = ({}) => {
-  return <RegisterTemplate />
+interface RegisterPageProps {
+  searchParams: Promise<{ as?: string }>
+}
+
+const RegisterPage = async ({ searchParams }: RegisterPageProps) => {
+  const { as } = await searchParams
+
+  return (
+    <RegisterTemplate
+      defaultType={as === "organizer" ? "organizer" : "attendee"}
+    />
+  )
 }
 
 export default RegisterPage

@@ -23,7 +23,7 @@ const CtaSection: FC = ({}) => {
             <Button
               className='bg-gradient-to-r from-blue-500 to-purple-500'
               component={Link}
-              href='/organizers/auth/register'
+              href='/auth/register?as=organizer'
               radius='xl'
               size='lg'
             >

@@ -1,5 +1,10 @@
 "use client"
 
+import AccountTypeSwitch, {
+  type AccountType,
+} from "@/modules/core/components/account-type-switch"
+import OrganizerGuestLoginButton from "@/modules/organizer/auth/components/guest-login-button"
+import OrganizationLoginForm from "@/modules/organizer/auth/organization-login-form/form"
 import {
   Button,
   Container,
@@ -11,14 +16,21 @@ import {
 } from "@mantine/core"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useEffect } from "react"
-import { useUserSession } from "../queries/use-user-session"
-import LoginForm from "../forms/login/form"
+import { useEffect, useState } from "react"
 import GuestLoginButton from "../components/guest-login-button"
+import LoginForm from "../forms/login/form"
+import { useUserSession } from "../queries/use-user-session"
 
-export default function LoginTemplate() {
+interface LoginTemplateProps {
+  defaultType?: AccountType
+}
+
+export default function LoginTemplate({
+  defaultType = "attendee",
+}: LoginTemplateProps) {
   const router = useRouter()
   const { isAuthenticated, isLoading } = useUserSession()
+  const [accountType, setAccountType] = useState<AccountType>(defaultType)
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
@@ -38,6 +50,8 @@ export default function LoginTemplate() {
     )
   }
 
+  const isOrganizer = accountType === "organizer"
+
   return (
     <Container size='sm' py={40}>
       <Paper radius='md' p='xl' withBorder className='bg-white'>
@@ -45,11 +59,23 @@ export default function LoginTemplate() {
           Welcome back
         </Title>
 
+        <div className='mb-6'>
+          <AccountTypeSwitch value={accountType} onChange={setAccountType} />
+        </div>
+
         <Text c='dimmed' size='sm' className='text-center mb-8'>
-          Sign in to your account to continue exploring amazing events
+          {isOrganizer
+            ? "Enter your organization's CertChain address to continue"
+            : "Sign in to your account to continue exploring amazing events"}
         </Text>
 
-        <LoginForm />
+        {isOrganizer ? (
+          <div className='mb-6'>
+            <OrganizationLoginForm />
+          </div>
+        ) : (
+          <LoginForm />
+        )}
 
         <Divider label='or' labelPosition='center' my='lg' />
 
@@ -57,13 +83,21 @@ export default function LoginTemplate() {
           <Text size='sm' c='dimmed'>
             Don&apos;t have an account?
           </Text>
-          <Link href='/auth/register' className='w-full'>
+          <Link
+            href={isOrganizer ? "/auth/register?as=organizer" : "/auth/register"}
+            className='w-full'
+          >
             <Button variant='light' fullWidth>
-              Create an account
+              {isOrganizer ? "Create an organization" : "Create an account"}
             </Button>
           </Link>
 
-          <GuestLoginButton fullWidth mt='xs' />
+          {isOrganizer ? (
+            <OrganizerGuestLoginButton fullWidth mt='xs' />
+          ) : (
+            <GuestLoginButton fullWidth mt='xs' />
+          )}
+
           <Text size='xs' c='dimmed' ta='center'>
             Guest mode signs you into a shared demo account with sample events
             and certificates. No email needed.
