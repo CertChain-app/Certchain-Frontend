@@ -6,6 +6,7 @@ import { FeaturesSection } from "../sections/features"
 import { HeroSection } from "../sections/hero"
 import { HowItWorksSection } from "../sections/how-it-works"
 import { TestimonialsSection } from "../sections/testimonials"
+import { VerifySection } from "../sections/verify"
 
 const UserLandingPageTemplate: FC = () => {
   return (
@@ -14,6 +15,7 @@ const UserLandingPageTemplate: FC = () => {
       <EventsSection />
       <FeaturesSection />
       <HowItWorksSection />
+      <VerifySection />
       <TestimonialsSection />
       <DashboardPreviewSection />
       {/* <BlogSection /> */}
