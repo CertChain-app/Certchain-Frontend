@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CertChain — Frontend
 
-## Getting Started
+Web frontend for CertChain, an event platform where organizers run events and
+issue verifiable certificates to the people who attend them.
 
-First, run the development server:
+The app serves three audiences from one Next.js codebase:
+
+- **Attendees** — browse and book events, join event chats, and collect
+  certificates in a personal dashboard.
+- **Organizers** — a dashboard to create and edit events, manage and ban
+  attendees, mark events complete, and issue or revoke certificates.
+- **Organizer subdomains** — each organizer can serve their own branded event
+  page on a custom domain, resolved at the edge by middleware.
+
+## Stack
+
+| | |
+|---|---|
+| Framework | Next.js (App Router) with TypeScript |
+| UI | Mantine, Tailwind CSS, Tabler + Lucide icons |
+| Data | TanStack Query over axios and Ky clients |
+| Forms | React Hook Form with Zod schemas |
+| Realtime | socket.io-client |
+| Certificates | `@vercel/og` for shareable certificate images |
+
+## Getting started
 
 ```bash
-npm run dev
-# or
+yarn install
+cp .env.example .env.local   # then fill in the values
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The dev server runs on [http://localhost:3001](http://localhost:3001) — port
+3001 rather than 3000, because the subdomain middleware matches on
+`*.localhost:3001`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project standardises on **yarn**; the other lockfiles are ignored.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Environment
 
-## Learn More
+| Variable | Required | Purpose |
+|---|---|---|
+| `NEXT_PUBLIC_API_URL` | yes | Base URL of the CertChain API. |
+| `NEXT_PUBLIC_BASE_URL` | — | Fallback used when `NEXT_PUBLIC_API_URL` is unset. |
+| `NEXT_PUBLIC_ASSETS_URL` | yes | Base URL for uploaded assets (logos, event images). |
+| `NEXT_PUBLIC_ROOT_DOMAIN` | — | Root domain for organizer subdomains. When unset, subdomain routing is skipped, which is what preview deployments rely on. |
 
-To learn more about Next.js, take a look at the following resources:
+Requests authenticate with credentialed cookies against the API, so the API
+must allow credentials from this origin.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Command | Description |
+|---|---|
+| `yarn dev` | Dev server with Turbopack on port 3001 |
+| `yarn build` | Production build |
+| `yarn start` | Serve the production build |
+| `yarn lint` | ESLint |
 
-## Deploy on Vercel
+## Project layout
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+src/
+  api/
+    clients/      one client per resource (user + organizer sides)
+    templates/    BaseClient / CrudClient and their Ky equivalents
+    fetcher.ts    configured axios + ky instances
+  app/
+    (routes)/(users)/        attendee-facing routes
+    (routes)/(organizers)/   organizer-facing routes
+    internal/[domain]/       rendered for organizer custom domains
+  modules/
+    core/                 shared components, hooks and providers
+    types/                shared domain models
+    users/                auth, landing, events, user-events, dashboard
+    chats/                event conversations
+    organizer/            organizer marketing site and auth
+    organizer-dashboard/  organizer dashboard, events, certificates, profile
+    organizer-domain/     tenant pages served on custom domains
+  middleware.ts           resolves an organizer from the hostname
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Each module under `src/modules` follows the same internal shape —
+`templates/` for page-level composition, `components/`, `forms/` with colocated
+Zod schemas, and `queries/` + `mutations/` wrapping TanStack Query.
+
+### Routing and multi-tenancy
+
+`src/middleware.ts` inspects the request hostname. Requests to the root domain
+or to a preview URL pass straight through. Anything on a subdomain is looked up
+against the API and rewritten to `/internal/<hostname>`, which renders that
+organizer's branded page. A failed lookup redirects to `/404` rather than
+erroring, so an unknown subdomain degrades gracefully.
+
+## Deployment
+
+Pushing to `main` triggers `.github/workflows/cd.yml`, which SSHes to the
+application host and runs `publish.sh` — pull, `yarn`, `yarn build`, then a pm2
+restart of the `cc-app` process defined in `pm2-prod.config.js`.
+
+The deploy workflow reads `HOST`, `USERNAME` and `PASSWORD` from GitHub Actions
+secrets. Do not commit any of them.
