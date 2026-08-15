@@ -6,6 +6,7 @@ import { IconMenu2 } from "@tabler/icons-react"
 
 import Link from "next/link"
 import type { FC } from "react"
+import GuestLoginButton from "../../auth/components/guest-login-button"
 import UserSignedIn from "../../auth/components/signed-in"
 import UserSignedOut from "../../auth/components/signed-out"
 
@@ -52,6 +53,11 @@ export const Navbar: FC = () => {
             )}
           </UserSignedIn>
           <UserSignedOut>
+            <GuestLoginButton
+              variant='subtle'
+              color='indigo'
+              label='Try the demo'
+            />
             <Button
               variant='subtle'
               className='text-gray-600 hover:text-gray-900'
@@ -89,6 +95,12 @@ export const Navbar: FC = () => {
               </Link>
             ))}
 
+            <GuestLoginButton
+              variant='light'
+              color='indigo'
+              label='Try the demo'
+              onDone={close}
+            />
             <Button
               variant='ghost'
               className='justify-start px-0'

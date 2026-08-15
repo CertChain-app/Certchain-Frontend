@@ -1,4 +1,6 @@
 import Logo from "@/modules/core/components/logo"
+import { Divider } from "@mantine/core"
+import OrganizerGuestLoginButton from "../components/guest-login-button"
 import OrganizationLoginForm from "../organization-login-form/form"
 
 export default function OrganizationLoginTemplate() {
@@ -17,6 +19,17 @@ export default function OrganizationLoginTemplate() {
           </p>
         </div>
         <OrganizationLoginForm />
+
+        <Divider label='or' labelPosition='center' />
+
+        <div className='space-y-2'>
+          <OrganizerGuestLoginButton fullWidth size='lg' />
+          <p className='text-center text-xs text-gray-500'>
+            Opens a demo workspace with sample events, attendees, and issued
+            certificates. No signup required.
+          </p>
+        </div>
+
         <div className='text-center space-y-4 mt-6 text-sm'>
           <p className='text-gray-600'>
             Looking to create a organization instead?{" "}

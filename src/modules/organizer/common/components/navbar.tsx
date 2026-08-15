@@ -4,6 +4,7 @@ import Logo from "@/modules/core/components/logo"
 import { Button } from "@mantine/core"
 import Link from "next/link"
 import { FC } from "react"
+import OrganizerGuestLoginButton from "../../auth/components/guest-login-button"
 
 const Navbar: FC = ({}) => {
   return (
@@ -39,6 +40,12 @@ const Navbar: FC = ({}) => {
           </Link>
         </div>
         <div className='flex items-center gap-4'>
+          <OrganizerGuestLoginButton
+            variant='subtle'
+            color='indigo'
+            label='Try the demo'
+            visibleFrom='sm'
+          />
           <Button
             variant='subtle'
             component={Link}

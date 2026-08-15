@@ -1,4 +1,5 @@
 import type { FC } from "react"
+import OrganizerGuestLoginButton from "../components/guest-login-button"
 import OrganizerRegisterForm from "../form/form"
 
 const OrganizerRegisterTemplate: FC = ({}) => {
@@ -10,6 +11,13 @@ const OrganizerRegisterTemplate: FC = ({}) => {
           Join thousands of event organizers who trust CertChain to manage their
           certifications. Get started with your free trial today.
         </p>
+
+        <div className='mb-10 flex flex-col items-center gap-2'>
+          <OrganizerGuestLoginButton label='Just looking? Open the demo workspace' />
+          <p className='text-xs text-gray-500'>
+            Sample events, attendees, and issued certificates — no signup.
+          </p>
+        </div>
       </div>
       <OrganizerRegisterForm />
     </div>

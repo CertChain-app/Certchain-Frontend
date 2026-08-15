@@ -29,6 +29,10 @@ export class UserAuthClient extends CrudClient<IUser, RegisterSchema> {
     return this.post("/login", data)
   }
 
+  async guestLogin() {
+    return this.post<{ user: IUser }>("/guest-login")
+  }
+
   async forgotPassword(data: OrganizerForgotPasswordSchema) {
     return this.post("/forgot-password", data)
   }

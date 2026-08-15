@@ -1,6 +1,7 @@
 "use client"
 
-import { Button } from "@mantine/core"
+import GuestLoginButton from "@/modules/users/auth/components/guest-login-button"
+import { Button, Group, Text } from "@mantine/core"
 import Link from "next/link"
 import type { FC } from "react"
 import SearchForm from "../components/search-form"
@@ -22,16 +23,23 @@ export const HeroSection: FC = () => {
         <div className='mx-auto max-w-2xl mb-8'>
           <SearchForm />
         </div>
-        <Button
-          component={Link}
-          href='/auth/register'
-          variant='gradient'
-          radius='xl'
-          size='xl'
-          className='bg-gradient-to-r from-blue-500 to-purple-500'
-        >
-          Create Your Free Account
-        </Button>
+        <Group justify='center' gap='md'>
+          <Button
+            component={Link}
+            href='/auth/register'
+            variant='gradient'
+            radius='xl'
+            size='xl'
+            className='bg-gradient-to-r from-blue-500 to-purple-500'
+          >
+            Create Your Free Account
+          </Button>
+          <GuestLoginButton radius='xl' size='xl' label='Preview as guest' />
+        </Group>
+        <Text size='sm' c='dimmed' mt='md'>
+          Guest mode opens a demo account with sample events and certificates —
+          no signup.
+        </Text>
       </div>
     </section>
   )

@@ -32,6 +32,13 @@ export class OrganizerAuthClient extends CrudClient<IOrganizer> {
     return this.post("/login", data)
   }
 
+  async guestLogin() {
+    return this.post<{
+      organizer: IOrganizer
+      teamMember: ITeamMember
+    }>("/guest-login")
+  }
+
   async forgotPassword(data: OrganizerForgotPasswordSchema) {
     return this.post("/forgot-password", data)
   }
