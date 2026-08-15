@@ -13,10 +13,10 @@ import UserSignedOut from "../../auth/components/signed-out"
 const navLinks = [
   { label: "Features", href: "/#features" },
   { label: "Events", href: "/events" },
+  { label: "Verify Certificate", href: "/verify" },
   { label: "How It Works", href: "/#how-it-works" },
   { label: "Testimonials", href: "/#testimonials" },
   { label: "Blog", href: "/#blog" },
-  { label: "For Organizers", href: "/organizers" },
 ]
 
 export const Navbar: FC = () => {

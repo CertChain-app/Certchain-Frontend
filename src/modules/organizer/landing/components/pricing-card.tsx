@@ -43,7 +43,7 @@ export function PricingCard({
       </ul>
       <Button
         component={Link}
-        href='/organizers/auth/register'
+        href='/auth/register?as=organizer'
         className={`w-full ${
           highlighted
             ? "bg-white text-blue-500 hover:bg-gray-100"

@@ -1,5 +1,10 @@
 "use client"
 
+import AccountTypeSwitch, {
+  type AccountType,
+} from "@/modules/core/components/account-type-switch"
+import OrganizerGuestLoginButton from "@/modules/organizer/auth/components/guest-login-button"
+import OrganizerRegisterForm from "@/modules/organizer/auth/form/form"
 import {
   Button,
   Container,
@@ -10,23 +15,38 @@ import {
   Title,
 } from "@mantine/core"
 import Link from "next/link"
+import { useState } from "react"
 import GuestLoginButton from "../components/guest-login-button"
 import RegisterForm from "../forms/register/form"
 
-export default function RegisterTemplate() {
+interface RegisterTemplateProps {
+  defaultType?: AccountType
+}
+
+export default function RegisterTemplate({
+  defaultType = "attendee",
+}: RegisterTemplateProps) {
+  const [accountType, setAccountType] = useState<AccountType>(defaultType)
+  const isOrganizer = accountType === "organizer"
+
   return (
-    <Container size='sm' py={40}>
+    <Container size={isOrganizer ? "md" : "sm"} py={40}>
       <Paper radius='md' p='xl' withBorder className='bg-white'>
         <Title order={2} className='text-center mb-6'>
-          Create your account
+          {isOrganizer ? "Create your organization" : "Create your account"}
         </Title>
 
+        <div className='mb-6'>
+          <AccountTypeSwitch value={accountType} onChange={setAccountType} />
+        </div>
+
         <Text c='dimmed' size='sm' className='text-center mb-8'>
-          Join thousands of event organizers and attendees. Start exploring
-          amazing events today!
+          {isOrganizer
+            ? "Run events, manage attendees, and issue verifiable certificates."
+            : "Join thousands of event organizers and attendees. Start exploring amazing events today!"}
         </Text>
 
-        <RegisterForm />
+        {isOrganizer ? <OrganizerRegisterForm /> : <RegisterForm />}
 
         <Divider label='or' labelPosition='center' my='lg' />
 
@@ -34,17 +54,29 @@ export default function RegisterTemplate() {
           <Text size='sm' c='dimmed'>
             Already have an account?
           </Text>
-          <Link href='/auth/login' className='w-full'>
+          <Link
+            href={isOrganizer ? "/auth/login?as=organizer" : "/auth/login"}
+            className='w-full'
+          >
             <Button variant='light' fullWidth>
               Sign in to your account
             </Button>
           </Link>
 
-          <GuestLoginButton
-            fullWidth
-            mt='xs'
-            label='Skip signup, explore as guest'
-          />
+          {isOrganizer ? (
+            <OrganizerGuestLoginButton
+              fullWidth
+              mt='xs'
+              label='Skip signup, open the demo workspace'
+            />
+          ) : (
+            <GuestLoginButton
+              fullWidth
+              mt='xs'
+              label='Skip signup, explore as guest'
+            />
+          )}
+
           <Text size='xs' c='dimmed' ta='center'>
             Guest mode signs you into a shared demo account with sample events
             and certificates.
