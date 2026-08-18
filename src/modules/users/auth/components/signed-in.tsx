@@ -11,7 +11,7 @@ interface UserSignedInProps {
 const UserSignedIn: FC<UserSignedInProps> = ({ children, loader }) => {
   const { isAuthenticated, isLoading, user } = useUserSession()
 
-  if (isLoading) return loader || <Loader size='sm' />
+  if (isLoading) return loader ?? <Loader size="sm" />
   if (!isAuthenticated) return null
 
   return children(user, isLoading)

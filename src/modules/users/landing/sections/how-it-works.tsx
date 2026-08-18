@@ -1,25 +1,56 @@
 import type { FC } from "react"
-import { StepCard } from "../components/step-card"
-import { steps } from "../data"
+
+const STEPS = [
+  {
+    n: "01",
+    title: "Create your account",
+    body: "Set up a free profile in a minute and get your credential wallet.",
+  },
+  {
+    n: "02",
+    title: "Attend & participate",
+    body: "Register for events, keep your ticket handy, and take part.",
+  },
+  {
+    n: "03",
+    title: "Receive your credential",
+    body: "Issuers mint your certificate the moment you complete the event.",
+  },
+  {
+    n: "04",
+    title: "Share proof anywhere",
+    body: "Send a verify link that confirms authenticity instantly, forever.",
+  },
+]
 
 export const HowItWorksSection: FC = () => {
   return (
-    <section
-      id='how-it-works'
-      className='bg-gradient-to-br from-blue-50 to-purple-50 py-20'
-    >
-      <div className='container mx-auto px-4'>
-        <h2 className='mb-12 text-center text-3xl font-bold'>
-          How CertChain Works
-        </h2>
-        <div className='relative'>
-          <div className='absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-blue-300 to-purple-300 transform -translate-y-1/2 hidden lg:block'></div>
-          <div className='grid gap-8 md:grid-cols-2 lg:grid-cols-4 relative z-10'>
-            {steps.map((step, index) => (
-              <StepCard key={index} {...step} />
-            ))}
-          </div>
+    <section id='how-it-works' className='border-t border-border bg-background'>
+      <div className='mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24'>
+        <div className='max-w-2xl'>
+          <p className='font-mono text-xs uppercase tracking-widest text-primary'>
+            // workflow
+          </p>
+          <h2 className='mt-2 text-balance text-3xl font-semibold tracking-tight text-foreground sm:text-4xl'>
+            From attendance to proof
+          </h2>
         </div>
+
+        <ol className='mt-12 grid gap-px overflow-hidden rounded-xl border border-border bg-border md:grid-cols-4'>
+          {STEPS.map((step) => (
+            <li key={step.n} className='relative bg-card p-6'>
+              <span className='font-mono text-sm font-semibold text-primary'>
+                {step.n}
+              </span>
+              <h3 className='mt-6 text-base font-semibold text-foreground'>
+                {step.title}
+              </h3>
+              <p className='mt-2 text-sm leading-relaxed text-muted-foreground'>
+                {step.body}
+              </p>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   )
