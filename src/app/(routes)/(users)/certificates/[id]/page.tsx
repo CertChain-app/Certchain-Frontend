@@ -118,7 +118,7 @@ export default async function CertificatePage({
             deleted will not verify either.
           </p>
           <div className='mt-6'>
-            <VerifyCertificateForm size='sm' />
+            <VerifyCertificateForm />
           </div>
 
           <div className='mt-4'>

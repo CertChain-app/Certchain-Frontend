@@ -1,15 +1,15 @@
-import { Card, Skeleton } from "@mantine/core"
+import type { FC } from "react"
 
-export function EventLoadingCard() {
+export const EventLoadingCard: FC = () => {
   return (
-    <Card withBorder className='bg-white overflow-hidden'>
-      <Skeleton height={200} className='w-full' />
-      <div className='p-6'>
-        <Skeleton height={24} width='70%' className='mb-2' />
-        <Skeleton height={20} width='40%' className='mb-2' />
-        <Skeleton height={20} width='60%' className='mb-2' />
-        <Skeleton height={36} className='mt-4 w-full' />
+    <div className='overflow-hidden rounded-xl border border-border bg-card'>
+      <div className='aspect-[16/10] animate-pulse bg-muted' />
+      <div className='space-y-3 p-5'>
+        <div className='h-4 w-3/4 animate-pulse rounded bg-muted' />
+        <div className='h-3 w-2/5 animate-pulse rounded bg-muted' />
+        <div className='h-3 w-3/5 animate-pulse rounded bg-muted' />
+        <div className='h-3 w-1/4 animate-pulse rounded bg-muted' />
       </div>
-    </Card>
+    </div>
   )
 }

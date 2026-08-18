@@ -1,43 +1,52 @@
 "use client"
 
-import { Button, Container, Paper, Stack, Text, Title } from "@mantine/core"
+import { ButtonLink } from "@/modules/users/common/components/ui/button"
 import { jwtDecode } from "jwt-decode"
-import Link from "next/link"
+import { AuthDivider } from "../components/auth-divider"
+import { AuthShell } from "../components/auth-shell"
 import ResetPasswordForm from "../forms/reset-password/form"
 
 export default function ResetPasswordTemplate({ token }: { token: string }) {
-  const { email } = jwtDecode(token ?? "") as { email: string }
+  const { email } = (jwtDecode(token ?? "") ?? {}) as { email?: string }
+
   if (!email) {
-    return <div>Invalid token</div>
+    return (
+      <AuthShell
+        eyebrow='// recover'
+        title='This link has expired'
+        description='The reset link is invalid or no longer valid. Request a fresh one and try again.'
+      >
+        <ButtonLink href='/auth/forgot-password' size='lg' className='w-full'>
+          Request a new link
+        </ButtonLink>
+      </AuthShell>
+    )
   }
+
   return (
-    <Container size='sm' py={40}>
-      <Paper radius='md' p='xl' withBorder className='bg-white'>
-        <Title order={2} className='text-center mb-6'>
-          Reset Password
-        </Title>
+    <AuthShell
+      eyebrow='// recover'
+      title='Set a new password'
+      description={`Choose a new password for ${email}.`}
+      footer='By continuing, you agree to our Terms of Service and Privacy Policy.'
+    >
+      <ResetPasswordForm token={token} email={email} />
 
-        <Text c='dimmed' size='sm' className='text-center mb-8'>
-          Enter your new password below to reset your account password
-        </Text>
+      <AuthDivider />
 
-        <ResetPasswordForm token={token} email={email} />
-
-        <Stack gap='sm' align='center' mt='lg'>
-          <Text size='sm' c='dimmed'>
-            Remember your password?
-          </Text>
-          <Link href='/auth/login' className='w-full'>
-            <Button variant='light' fullWidth>
-              Back to login
-            </Button>
-          </Link>
-        </Stack>
-
-        <Text size='xs' c='dimmed' ta='center' mt='xl'>
-          By continuing, you agree to our Terms of Service and Privacy Policy
-        </Text>
-      </Paper>
-    </Container>
+      <div className='space-y-3'>
+        <p className='text-center text-sm text-muted-foreground'>
+          Remember your password?
+        </p>
+        <ButtonLink
+          href='/auth/login'
+          variant='outline'
+          size='lg'
+          className='w-full'
+        >
+          Back to sign in
+        </ButtonLink>
+      </div>
+    </AuthShell>
   )
 }

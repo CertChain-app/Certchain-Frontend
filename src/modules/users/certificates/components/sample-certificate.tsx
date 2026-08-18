@@ -1,5 +1,5 @@
 import { SAMPLE_CERTIFICATE_ID } from "@/lib/guest"
-import { IconArrowRight } from "@tabler/icons-react"
+import { ArrowRight, GraduationCap } from "lucide-react"
 import Link from "next/link"
 import type { FC } from "react"
 
@@ -19,10 +19,9 @@ const SampleCertificate: FC<SampleCertificateProps> = ({ compact = false }) => {
     return (
       <Link
         href={href}
-        className='inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:underline'
+        className='inline-flex items-center gap-1 font-mono text-xs text-primary underline-offset-4 hover:underline'
       >
-        See a sample certificate
-        <IconArrowRight size={15} />
+        → see a sample certificate
       </Link>
     )
   }
@@ -30,23 +29,20 @@ const SampleCertificate: FC<SampleCertificateProps> = ({ compact = false }) => {
   return (
     <Link
       href={href}
-      className='group flex items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 transition hover:border-blue-300 hover:shadow-sm'
+      className='group flex items-center gap-4 rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary/40 hover:bg-accent/25'
     >
-      <div className='flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-xl'>
-        🎓
-      </div>
-      <div className='min-w-0 flex-1'>
-        <p className='font-medium text-gray-900'>
+      <span className='flex size-12 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary'>
+        <GraduationCap className='size-6' />
+      </span>
+      <span className='min-w-0 flex-1'>
+        <span className='block font-medium text-foreground'>
           Don&apos;t have one? Try a sample
-        </p>
-        <p className='truncate text-sm text-gray-600'>
+        </span>
+        <span className='block truncate text-sm text-muted-foreground'>
           Certification Day 2026 · issued by CertChain Demo Co.
-        </p>
-      </div>
-      <IconArrowRight
-        size={18}
-        className='shrink-0 text-gray-400 transition group-hover:translate-x-0.5 group-hover:text-blue-600'
-      />
+        </span>
+      </span>
+      <ArrowRight className='size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary' />
     </Link>
   )
 }

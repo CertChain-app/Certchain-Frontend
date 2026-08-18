@@ -1,13 +1,13 @@
 "use client"
 
-import { Button, TextInput } from "@mantine/core"
-import { IconRosetteDiscountCheck } from "@tabler/icons-react"
+import { cn } from "@/modules/core/lib/utils"
+import { BadgeCheck, Search } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState, type FC, type FormEvent } from "react"
 
 interface VerifyCertificateFormProps {
-  size?: "sm" | "md" | "lg"
   autoFocus?: boolean
+  className?: string
 }
 
 /**
@@ -16,8 +16,8 @@ interface VerifyCertificateFormProps {
  * navigation — no auth, no client fetch.
  */
 const VerifyCertificateForm: FC<VerifyCertificateFormProps> = ({
-  size = "md",
   autoFocus = false,
+  className,
 }) => {
   const router = useRouter()
   const [value, setValue] = useState("")
@@ -40,26 +40,39 @@ const VerifyCertificateForm: FC<VerifyCertificateFormProps> = ({
   }
 
   return (
-    <form onSubmit={handleSubmit} className='w-full'>
-      <div className='flex flex-col gap-3 sm:flex-row'>
-        <TextInput
+    <form onSubmit={handleSubmit} className={cn("w-full", className)}>
+      <div
+        className={cn(
+          "flex items-center gap-2 rounded-lg border border-border bg-card p-1.5 shadow-sm focus-within:border-primary/60 focus-within:ring-[3px] focus-within:ring-primary/15",
+          error && "border-destructive/60"
+        )}
+      >
+        <Search className='ml-2 size-4 shrink-0 text-muted-foreground' />
+        <input
           value={value}
-          onChange={(event) => setValue(event.currentTarget.value)}
+          onChange={(event) => {
+            setValue(event.currentTarget.value)
+            if (error) setError(null)
+          }}
           placeholder='Certificate ID or link'
-          size={size}
-          autoFocus={autoFocus}
-          error={error}
-          className='flex-1'
           aria-label='Certificate ID'
+          autoFocus={autoFocus}
+          className='h-9 w-full bg-transparent font-mono text-sm text-foreground outline-none placeholder:font-sans placeholder:text-muted-foreground'
         />
-        <Button
+        <button
           type='submit'
-          size={size}
-          leftSection={<IconRosetteDiscountCheck size={18} />}
+          className='inline-flex h-9 shrink-0 items-center gap-1.5 rounded-lg bg-primary px-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/80'
         >
+          <BadgeCheck className='size-4' />
           Verify
-        </Button>
+        </button>
       </div>
+
+      {error && (
+        <p role='alert' className='mt-2 text-sm text-destructive'>
+          {error}
+        </p>
+      )}
     </form>
   )
 }

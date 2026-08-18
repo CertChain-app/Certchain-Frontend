@@ -55,11 +55,11 @@ export default function LoginForm() {
             <Group justify='space-between' mb={3}>
               <Text component='label' size='sm' fw={500}>
                 Password
-                <span className='text-red-500'>*</span>
+                <span className='text-destructive'>*</span>
               </Text>
               <Link
                 href='/auth/forgot-password'
-                className='text-sm text-blue-500 hover:underline'
+                className='text-sm text-primary hover:underline'
               >
                 Forgot password?
               </Link>

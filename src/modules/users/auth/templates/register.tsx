@@ -5,17 +5,10 @@ import AccountTypeSwitch, {
 } from "@/modules/core/components/account-type-switch"
 import OrganizerGuestLoginButton from "@/modules/organizer/auth/components/guest-login-button"
 import OrganizerRegisterForm from "@/modules/organizer/auth/form/form"
-import {
-  Button,
-  Container,
-  Divider,
-  Paper,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core"
-import Link from "next/link"
+import { ButtonLink } from "@/modules/users/common/components/ui/button"
 import { useState } from "react"
+import { AuthDivider } from "../components/auth-divider"
+import { AuthShell } from "../components/auth-shell"
 import GuestLoginButton from "../components/guest-login-button"
 import RegisterForm from "../forms/register/form"
 
@@ -30,64 +23,53 @@ export default function RegisterTemplate({
   const isOrganizer = accountType === "organizer"
 
   return (
-    <Container size={isOrganizer ? "md" : "sm"} py={40}>
-      <Paper radius='md' p='xl' withBorder className='bg-white'>
-        <Title order={2} className='text-center mb-6'>
-          {isOrganizer ? "Create your organization" : "Create your account"}
-        </Title>
+    <AuthShell
+      wide={isOrganizer}
+      eyebrow='// join'
+      title={isOrganizer ? "Create your organization" : "Create your account"}
+      description={
+        isOrganizer
+          ? "Run events, manage attendees, and issue verifiable certificates."
+          : "Collect tickets and tamper-proof certificates from every event you attend."
+      }
+      footer='By creating an account, you agree to our Terms of Service and Privacy Policy.'
+    >
+      <div className='mb-6'>
+        <AccountTypeSwitch value={accountType} onChange={setAccountType} />
+      </div>
 
-        <div className='mb-6'>
-          <AccountTypeSwitch value={accountType} onChange={setAccountType} />
-        </div>
+      {isOrganizer ? <OrganizerRegisterForm /> : <RegisterForm />}
 
-        <Text c='dimmed' size='sm' className='text-center mb-8'>
-          {isOrganizer
-            ? "Run events, manage attendees, and issue verifiable certificates."
-            : "Join thousands of event organizers and attendees. Start exploring amazing events today!"}
-        </Text>
+      <AuthDivider />
 
-        {isOrganizer ? <OrganizerRegisterForm /> : <RegisterForm />}
+      <div className='space-y-3'>
+        <p className='text-center text-sm text-muted-foreground'>
+          Already have an account?
+        </p>
 
-        <Divider label='or' labelPosition='center' my='lg' />
+        <ButtonLink
+          href={isOrganizer ? "/auth/login?as=organizer" : "/auth/login"}
+          variant='outline'
+          size='lg'
+          className='w-full'
+        >
+          Sign in to your account
+        </ButtonLink>
 
-        <Stack gap='sm' align='center'>
-          <Text size='sm' c='dimmed'>
-            Already have an account?
-          </Text>
-          <Link
-            href={isOrganizer ? "/auth/login?as=organizer" : "/auth/login"}
-            className='w-full'
-          >
-            <Button variant='light' fullWidth>
-              Sign in to your account
-            </Button>
-          </Link>
+        {isOrganizer ? (
+          <OrganizerGuestLoginButton
+            fullWidth
+            label='Skip signup, open the demo workspace'
+          />
+        ) : (
+          <GuestLoginButton fullWidth label='Skip signup, explore as guest' />
+        )}
 
-          {isOrganizer ? (
-            <OrganizerGuestLoginButton
-              fullWidth
-              mt='xs'
-              label='Skip signup, open the demo workspace'
-            />
-          ) : (
-            <GuestLoginButton
-              fullWidth
-              mt='xs'
-              label='Skip signup, explore as guest'
-            />
-          )}
-
-          <Text size='xs' c='dimmed' ta='center'>
-            Guest mode signs you into a shared demo account with sample events
-            and certificates.
-          </Text>
-        </Stack>
-
-        <Text size='xs' c='dimmed' ta='center' mt='xl'>
-          By creating an account, you agree to our Terms of Service and Privacy
-          Policy
-        </Text>
-      </Paper>
-    </Container>
+        <p className='text-center text-xs text-muted-foreground'>
+          Guest mode signs you into a shared demo account with sample events and
+          certificates.
+        </p>
+      </div>
+    </AuthShell>
   )
 }

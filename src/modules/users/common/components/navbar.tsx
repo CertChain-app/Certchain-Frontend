@@ -1,124 +1,133 @@
 "use client"
-import Logo from "@/modules/core/components/logo"
-import { Button, Drawer } from "@mantine/core"
-import { useDisclosure } from "@mantine/hooks"
-import { IconMenu2 } from "@tabler/icons-react"
 
+import { cn } from "@/modules/core/lib/utils"
+import { Menu, X } from "lucide-react"
 import Link from "next/link"
-import type { FC } from "react"
-import GuestLoginButton from "../../auth/components/guest-login-button"
+import { usePathname } from "next/navigation"
+import { useEffect, useState, type FC } from "react"
 import UserSignedIn from "../../auth/components/signed-in"
 import UserSignedOut from "../../auth/components/signed-out"
+import { BrandMark } from "./brand-mark"
+import { GuestButton } from "./guest-button"
+import { ButtonLink } from "./ui/button"
 
-const navLinks = [
+const NAV_LINKS = [
   { label: "Features", href: "/#features" },
   { label: "Events", href: "/events" },
-  { label: "Verify Certificate", href: "/verify" },
-  { label: "How It Works", href: "/#how-it-works" },
+  { label: "Verify", href: "/verify" },
+  { label: "How it works", href: "/#how-it-works" },
   { label: "Testimonials", href: "/#testimonials" },
-  { label: "Blog", href: "/#blog" },
 ]
 
+/** Holds the row's height while the session resolves, so nothing jumps. */
+const AuthPlaceholder = <span className='h-8 w-40' aria-hidden />
+
 export const Navbar: FC = () => {
-  const [opened, { open, close }] = useDisclosure(false)
+  const [open, setOpen] = useState(false)
+  const pathname = usePathname()
+
+  // Route changes come from anchor links inside the sheet too, so close on any.
+  useEffect(() => setOpen(false), [pathname])
+
   return (
-    <nav className='bg-white shadow-sm'>
-      <div className='container mx-auto flex items-center justify-between p-4'>
-        <Link href='/' className='flex items-center gap-2'>
-          <Logo className='w-36' />
-        </Link>
-        <div className='hidden md:flex items-center gap-8'>
-          {navLinks.map((link) => (
+    <header className='sticky top-0 z-50 border-b border-border/70 bg-background/80 font-sans backdrop-blur-md'>
+      <div className='mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6'>
+        <BrandMark />
+
+        <nav className='hidden items-center gap-7 md:flex'>
+          {NAV_LINKS.map((link) => (
             <Link
-              className='text-sm text-gray-600 hover:text-gray-900'
-              href={link.href}
               key={link.href}
+              href={link.href}
+              className='text-sm text-muted-foreground transition-colors hover:text-foreground'
             >
               {link.label}
             </Link>
           ))}
-        </div>
-        <div className='hidden md:flex items-center gap-4'>
-          <UserSignedIn>
+        </nav>
+
+        <div className='hidden items-center gap-2 md:flex'>
+          <UserSignedIn loader={AuthPlaceholder}>
             {() => (
-              <>
-                <Button
-                  className='bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:opacity-90'
-                  component={Link}
-                  href='/dashboard'
-                >
-                  Dashboard
-                </Button>
-              </>
+              <ButtonLink href='/dashboard' size='sm'>
+                Dashboard
+              </ButtonLink>
             )}
           </UserSignedIn>
-          <UserSignedOut>
-            <GuestLoginButton
-              variant='subtle'
-              color='indigo'
+          <UserSignedOut loader={AuthPlaceholder}>
+            <GuestButton
               label='Try the demo'
+              size='sm'
+              className='text-muted-foreground hover:text-foreground'
             />
-            <Button
-              variant='subtle'
-              className='text-gray-600 hover:text-gray-900'
-              component={Link}
+            <ButtonLink
               href='/auth/login'
+              variant='ghost'
+              size='sm'
+              className='text-muted-foreground hover:text-foreground'
             >
               Sign in
-            </Button>
-            <Button
-              className='bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:opacity-90'
-              component={Link}
-              href='/auth/register'
-            >
-              Join Now
-            </Button>
+            </ButtonLink>
+            <ButtonLink href='/auth/register' size='sm'>
+              Join now
+            </ButtonLink>
           </UserSignedOut>
         </div>
+
         <button
           type='button'
-          onClick={open}
-          aria-label='Open menu'
-          className='md:hidden inline-flex items-center justify-center rounded-full border border-blue-100 bg-gradient-to-br from-blue-50 via-white to-blue-100 p-2 text-blue-600 shadow-sm transition hover:shadow-md'
+          onClick={() => setOpen((value) => !value)}
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          className='inline-flex size-9 items-center justify-center rounded-lg border border-border bg-card text-foreground transition-colors hover:bg-muted md:hidden'
         >
-          <IconMenu2 size={20} />
+          {open ? <X className='size-4' /> : <Menu className='size-4' />}
         </button>
-        <Drawer opened={opened} onClose={close} title='Menu'>
-          <nav className='flex flex-col gap-4'>
-            {navLinks.map((link) => (
-              <Link
-                className='text-lg font-medium hover:text-blue-500'
-                href={link.href}
-                key={link.href}
-              >
-                {link.label}
-              </Link>
-            ))}
-
-            <GuestLoginButton
-              variant='light'
-              color='indigo'
-              label='Try the demo'
-              onDone={close}
-            />
-            <Button
-              variant='ghost'
-              className='justify-start px-0'
-              component={Link}
-              href='/auth/login'
-            >
-              Sign in
-            </Button>
-            <Button
-              component={Link}
-              href='/auth/register'
-              className='bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:opacity-90'
-            >
-              Join Now
-            </Button>
-          </nav>
-        </Drawer>
       </div>
-    </nav>
+
+      {/* mobile sheet */}
+      <div
+        className={cn(
+          "overflow-hidden border-t border-border bg-background transition-[max-height] duration-300 md:hidden",
+          open ? "max-h-[32rem]" : "max-h-0 border-t-0"
+        )}
+      >
+        <nav className='flex flex-col gap-1 px-4 py-4 sm:px-6'>
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setOpen(false)}
+              className='rounded-lg px-2 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted'
+            >
+              {link.label}
+            </Link>
+          ))}
+
+          <div className='mt-3 flex flex-col gap-2 border-t border-border pt-4'>
+            <UserSignedIn loader={AuthPlaceholder}>
+              {() => (
+                <ButtonLink href='/dashboard' size='lg'>
+                  Dashboard
+                </ButtonLink>
+              )}
+            </UserSignedIn>
+            <UserSignedOut loader={AuthPlaceholder}>
+              <GuestButton
+                label='Try the demo'
+                variant='outline'
+                onDone={() => setOpen(false)}
+              />
+              <ButtonLink href='/auth/login' variant='outline' size='lg'>
+                Sign in
+              </ButtonLink>
+              <ButtonLink href='/auth/register' size='lg'>
+                Join now
+              </ButtonLink>
+            </UserSignedOut>
+          </div>
+        </nav>
+      </div>
+    </header>
   )
 }

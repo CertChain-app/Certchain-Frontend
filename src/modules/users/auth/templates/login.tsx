@@ -5,18 +5,11 @@ import AccountTypeSwitch, {
 } from "@/modules/core/components/account-type-switch"
 import OrganizerGuestLoginButton from "@/modules/organizer/auth/components/guest-login-button"
 import OrganizationLoginForm from "@/modules/organizer/auth/organization-login-form/form"
-import {
-  Button,
-  Container,
-  Divider,
-  Paper,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core"
-import Link from "next/link"
+import { ButtonLink } from "@/modules/users/common/components/ui/button"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import { AuthDivider } from "../components/auth-divider"
+import { AuthShell } from "../components/auth-shell"
 import GuestLoginButton from "../components/guest-login-button"
 import LoginForm from "../forms/login/form"
 import { useUserSession } from "../queries/use-user-session"
@@ -40,74 +33,66 @@ export default function LoginTemplate({
 
   if (isLoading || isAuthenticated) {
     return (
-      <Container size='sm' py={40}>
-        <Paper radius='md' p='xl' withBorder className='bg-white'>
-          <Text c='dimmed' size='sm' className='text-center'>
-            Loading...
-          </Text>
-        </Paper>
-      </Container>
+      <AuthShell
+        eyebrow='// sign in'
+        title='Welcome back'
+        description='Checking your session…'
+      >
+        <div className='space-y-3'>
+          <div className='h-10 animate-pulse rounded-lg bg-muted' />
+          <div className='h-10 animate-pulse rounded-lg bg-muted' />
+          <div className='h-9 animate-pulse rounded-lg bg-muted' />
+        </div>
+      </AuthShell>
     )
   }
 
   const isOrganizer = accountType === "organizer"
 
   return (
-    <Container size='sm' py={40}>
-      <Paper radius='md' p='xl' withBorder className='bg-white'>
-        <Title order={2} className='text-center mb-6'>
-          Welcome back
-        </Title>
+    <AuthShell
+      eyebrow='// sign in'
+      title='Welcome back'
+      description={
+        isOrganizer
+          ? "Enter your organization's CertChain address to continue."
+          : "Sign in to pick up your tickets, events, and certificates."
+      }
+      footer='By signing in, you agree to our Terms of Service and Privacy Policy.'
+    >
+      <div className='mb-6'>
+        <AccountTypeSwitch value={accountType} onChange={setAccountType} />
+      </div>
 
-        <div className='mb-6'>
-          <AccountTypeSwitch value={accountType} onChange={setAccountType} />
-        </div>
+      {isOrganizer ? <OrganizationLoginForm /> : <LoginForm />}
 
-        <Text c='dimmed' size='sm' className='text-center mb-8'>
-          {isOrganizer
-            ? "Enter your organization's CertChain address to continue"
-            : "Sign in to your account to continue exploring amazing events"}
-        </Text>
+      <AuthDivider />
+
+      <div className='space-y-3'>
+        <p className='text-center text-sm text-muted-foreground'>
+          Don&apos;t have an account?
+        </p>
+
+        <ButtonLink
+          href={isOrganizer ? "/auth/register?as=organizer" : "/auth/register"}
+          variant='outline'
+          size='lg'
+          className='w-full'
+        >
+          {isOrganizer ? "Create an organization" : "Create an account"}
+        </ButtonLink>
 
         {isOrganizer ? (
-          <div className='mb-6'>
-            <OrganizationLoginForm />
-          </div>
+          <OrganizerGuestLoginButton fullWidth />
         ) : (
-          <LoginForm />
+          <GuestLoginButton fullWidth />
         )}
 
-        <Divider label='or' labelPosition='center' my='lg' />
-
-        <Stack gap='sm' align='center'>
-          <Text size='sm' c='dimmed'>
-            Don&apos;t have an account?
-          </Text>
-          <Link
-            href={isOrganizer ? "/auth/register?as=organizer" : "/auth/register"}
-            className='w-full'
-          >
-            <Button variant='light' fullWidth>
-              {isOrganizer ? "Create an organization" : "Create an account"}
-            </Button>
-          </Link>
-
-          {isOrganizer ? (
-            <OrganizerGuestLoginButton fullWidth mt='xs' />
-          ) : (
-            <GuestLoginButton fullWidth mt='xs' />
-          )}
-
-          <Text size='xs' c='dimmed' ta='center'>
-            Guest mode signs you into a shared demo account with sample events
-            and certificates. No email needed.
-          </Text>
-        </Stack>
-
-        <Text size='xs' c='dimmed' ta='center' mt='xl'>
-          By signing in, you agree to our Terms of Service and Privacy Policy
-        </Text>
-      </Paper>
-    </Container>
+        <p className='text-center text-xs text-muted-foreground'>
+          Guest mode signs you into a shared demo account with sample events and
+          certificates. No email needed.
+        </p>
+      </div>
+    </AuthShell>
   )
 }

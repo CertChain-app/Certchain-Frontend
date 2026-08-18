@@ -8,7 +8,7 @@ interface BaseUserLayoutProps {
 
 const BaseUserLayout: FC<BaseUserLayoutProps> = ({ children }) => {
   return (
-    <div className='min-h-screen flex flex-col'>
+    <div className='flex min-h-screen flex-col bg-background font-sans text-foreground'>
       <Navbar />
       <main className='flex-1'>{children}</main>
       <Footer />

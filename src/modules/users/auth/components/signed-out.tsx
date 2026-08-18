@@ -10,7 +10,7 @@ interface UserSignedOutProps {
 const UserSignedOut: FC<UserSignedOutProps> = ({ children, loader }) => {
   const { isAuthenticated, isLoading } = useUserSession()
 
-  if (isLoading) return loader || <Loader size='sm' />
+  if (isLoading) return loader ?? <Loader size="sm" />
   if (isAuthenticated) return null
 
   return <>{children}</>
