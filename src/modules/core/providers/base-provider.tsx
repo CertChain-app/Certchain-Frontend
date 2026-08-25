@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { AppProgressBar } from "next-nprogress-bar"
 import { Suspense, type FC } from "react"
+import BackendWakingBanner from "../components/backend-waking-banner"
 import Toaster from "../components/toaster"
 
 interface BaseProviderProps {
@@ -72,6 +73,7 @@ const BaseProvider: FC<BaseProviderProps> = ({ children }) => {
       <ModalsProvider>
         <QueryClientProvider client={queryClient}>
           <Suspense>{children}</Suspense>
+          <BackendWakingBanner />
           <Toaster />
           <ReactQueryDevtools initialIsOpen={false} />
           <AppProgressBar
