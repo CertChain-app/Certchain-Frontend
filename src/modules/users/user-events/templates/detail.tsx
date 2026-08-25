@@ -20,7 +20,6 @@ import {
   Title,
   Tooltip,
 } from "@mantine/core"
-import { useInterval } from "@mantine/hooks"
 import QRCodeStyling from "@solana/qr-code-styling"
 // import { AddToCalendarButton } from "add-to-calendar-button-react"
 import dayjs from "dayjs"
@@ -90,15 +89,11 @@ export default function UserEventDetailTemplate({
   }, [userEvent?.event.startDate])
 
   // Update time every second
-  const interval = useInterval(() => {
-    setTimeLeft(calculateTimeLeft())
-  }, 1000)
-
   useEffect(() => {
     setTimeLeft(calculateTimeLeft())
-    interval.start()
-    return interval.stop
-  }, [calculateTimeLeft, interval, userEvent])
+    const timer = setInterval(() => setTimeLeft(calculateTimeLeft()), 1000)
+    return () => clearInterval(timer)
+  }, [calculateTimeLeft])
 
   // Check if the event is starting within 30 minutes
   const isWithin30Minutes = useMemo(() => {
@@ -113,7 +108,8 @@ export default function UserEventDetailTemplate({
 
   // Format time until event starts for text display
   const timeUntilStart = useMemo(() => {
-    if (timeLeft.total <= 0) return "Event has started"
+    // Kept short: this renders inside the countdown ring, which is 120px.
+    if (timeLeft.total <= 0) return "Started"
 
     const parts = []
     if (timeLeft.hours > 0) parts.push(`${timeLeft.hours}h`)
@@ -167,6 +163,20 @@ export default function UserEventDetailTemplate({
     })
   }, [userEvent])
 
+  // Certificate id, normalised across the shapes the API has returned for it
+  const certificateId = useMemo(() => {
+    if (!userEvent?.certificate) return ""
+    const id =
+      (userEvent as { certificateId?: string })?.certificateId ||
+      (typeof userEvent.certificate === "string"
+        ? userEvent.certificate
+        : userEvent.certificate.id ||
+          (userEvent.certificate as { certificateId?: string })
+            ?.certificateId ||
+          "")
+    return id === "undefined" ? "" : id
+  }, [userEvent])
+
   // Generate QR code when it changes
   useEffect(() => {
     if (qrRef.current && qrCode) {
@@ -198,19 +208,6 @@ export default function UserEventDetailTemplate({
   const { event } = userEvent
   const hasSchedules = event.schedules && event.schedules.length > 0
   const hasFaqs = event.faqs && event.faqs.length > 0
-
-  const certificateId = useMemo(() => {
-    if (!userEvent?.certificate) return ""
-    const id =
-      (userEvent as { certificateId?: string })?.certificateId ||
-      (typeof userEvent.certificate === "string"
-        ? userEvent.certificate
-        : userEvent.certificate.id ||
-          (userEvent.certificate as { certificateId?: string })
-            ?.certificateId ||
-          "")
-    return id === "undefined" ? "" : id
-  }, [userEvent])
 
   return (
     <div className='max-w-7xl mx-auto p-6'>
@@ -263,7 +260,7 @@ export default function UserEventDetailTemplate({
                 Event Completed
               </Text>
               <Text size='sm' c='dimmed'>
-                {dayjs(userEvent.completedAt as string).format("MMMM D, YYYY")}
+                {dayjs(userEvent.event.completedAt).format("MMMM D, YYYY")}
               </Text>
             </div>
           </Group>
@@ -366,7 +363,9 @@ export default function UserEventDetailTemplate({
                   <Stack>
                     <Group className='p-4 rounded-lg bg-purple-50/50 backdrop-blur-sm'>
                       <TbMapPin size={20} className='text-purple-500' />
-                      <Text className='font-medium'>{event.type}</Text>
+                      <Text className='font-medium'>
+                        {event.type === "ONLINE" ? "Online" : "In Person"}
+                      </Text>
                     </Group>
 
                     <Group className='p-4 rounded-lg bg-blue-50/50 backdrop-blur-sm'>
@@ -420,7 +419,9 @@ export default function UserEventDetailTemplate({
                             {event.city}, {event.state}
                           </Text>
                           <Text className='font-medium'>
-                            {event.country} - {event.pincode}
+                            {[event.country, event.pincode]
+                              .filter(Boolean)
+                              .join(" - ")}
                           </Text>
                         </Stack>
                       </Paper>

@@ -219,7 +219,9 @@ export default function EventDetailTemplate({
             <Stack>
               <Group>
                 <IconMapPin size={20} className='text-blue-500' />
-                <Text>{eventData.type}</Text>
+                <Text>
+                  {eventData.type === "ONLINE" ? "Online" : "In Person"}
+                </Text>
               </Group>
 
               <Group>
@@ -277,7 +279,9 @@ export default function EventDetailTemplate({
                     {eventData.city}, {eventData.state}
                   </Text>
                   <Text>
-                    {eventData.country} - {eventData.pincode}
+                    {[eventData.country, eventData.pincode]
+                      .filter(Boolean)
+                      .join(" - ")}
                   </Text>
                 </div>
               )}
