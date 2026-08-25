@@ -37,19 +37,20 @@ export const columns: DataTableColumn<IUserEvent>[] = [
       ),
   },
   {
-    accessor: "type",
+    accessor: "event.type",
     title: "Type",
     sortable: true,
-    render: (event) => (event.type === "ONLINE" ? "Online" : "In Person"),
+    render: (event) =>
+      event.event?.type === "ONLINE" ? "Online" : "In Person",
   },
   {
-    accessor: "startDate",
+    accessor: "event.startDate",
     title: "Start Date",
     sortable: true,
     render: (event) => dayjs(event.event.startDate).format("YYYY-MM-DD HH:mm"),
   },
   {
-    accessor: "endDate",
+    accessor: "event.endDate",
     title: "End Date",
     sortable: true,
     render: (event) => dayjs(event.event.endDate).format("YYYY-MM-DD HH:mm"),
